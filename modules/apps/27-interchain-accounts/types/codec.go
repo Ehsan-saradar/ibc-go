@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	abci "github.com/tendermint/tendermint/abci/types"
 )
 
 var (
@@ -82,4 +83,16 @@ func DeserializeCosmosTx(cdc codec.BinaryCodec, data []byte) ([]sdk.Msg, error) 
 	}
 
 	return msgs, nil
+}
+
+func DeserializeABCIQuery(cdc codec.BinaryCodec, data []byte) (abci.RequestQuery, error) {
+	var q abci.RequestQuery
+
+	// only ProtoCodec is supported
+	if _, ok := cdc.(*codec.ProtoCodec); !ok {
+		return q, sdkerrors.Wrap(ErrInvalidCodec, "only ProtoCodec is supported for receiving messages on the host chain")
+	}
+
+	err := cdc.Unmarshal(data, &q)
+	return q, err
 }

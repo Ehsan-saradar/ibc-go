@@ -30,14 +30,16 @@ type Keeper struct {
 
 	scopedKeeper capabilitykeeper.ScopedKeeper
 
-	msgRouter *baseapp.MsgServiceRouter
+	msgRouter   *baseapp.MsgServiceRouter
+	queryRouter *baseapp.GRPCQueryRouter
 }
 
 // NewKeeper creates a new interchain accounts host Keeper instance
 func NewKeeper(
 	cdc codec.BinaryCodec, key sdk.StoreKey, paramSpace paramtypes.Subspace,
 	channelKeeper icatypes.ChannelKeeper, portKeeper icatypes.PortKeeper,
-	accountKeeper icatypes.AccountKeeper, scopedKeeper capabilitykeeper.ScopedKeeper, msgRouter *baseapp.MsgServiceRouter,
+	accountKeeper icatypes.AccountKeeper, scopedKeeper capabilitykeeper.ScopedKeeper,
+	msgRouter *baseapp.MsgServiceRouter, queryRouter *baseapp.GRPCQueryRouter,
 ) Keeper {
 
 	// ensure ibc interchain accounts module account is set
@@ -59,6 +61,7 @@ func NewKeeper(
 		accountKeeper: accountKeeper,
 		scopedKeeper:  scopedKeeper,
 		msgRouter:     msgRouter,
+		queryRouter:   queryRouter,
 	}
 }
 

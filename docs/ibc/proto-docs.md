@@ -493,6 +493,7 @@ host
 | ---- | ------ | ----------- |
 | TYPE_UNSPECIFIED | 0 | Default zero value enumeration |
 | TYPE_EXECUTE_TX | 1 | Execute a transaction on an interchain accounts host chain |
+| TYPE_QUERY | 2 | Query host chain and send back the results to the controller chain |
 
 
  <!-- end enums -->
