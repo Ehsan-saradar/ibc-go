@@ -154,5 +154,5 @@ func (k Keeper) query(ctx sdk.Context, q abci.RequestQuery) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return res.Marshal()
+	return res.Value, nil
 }
