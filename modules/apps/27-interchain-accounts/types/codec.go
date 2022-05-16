@@ -85,6 +85,15 @@ func DeserializeCosmosTx(cdc codec.BinaryCodec, data []byte) ([]sdk.Msg, error) 
 	return msgs, nil
 }
 
+func SerializeABCIQuery(cdc codec.BinaryCodec, q abci.RequestQuery) ([]byte, error) {
+	// only ProtoCodec is supported
+	if _, ok := cdc.(*codec.ProtoCodec); !ok {
+		return nil, sdkerrors.Wrap(ErrInvalidCodec, "only ProtoCodec is supported for receiving messages on the host chain")
+	}
+
+	return cdc.Marshal(&q)
+}
+
 func DeserializeABCIQuery(cdc codec.BinaryCodec, data []byte) (abci.RequestQuery, error) {
 	var q abci.RequestQuery
 
