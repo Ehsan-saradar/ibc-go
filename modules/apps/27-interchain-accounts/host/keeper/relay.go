@@ -144,6 +144,8 @@ func (k Keeper) executeMsg(ctx sdk.Context, msg sdk.Msg) ([]byte, error) {
 	return res.Data, nil
 }
 
+// Attempts to get the query handler from the router and if found will then execute the query.
+// If the query execution is successful, the query response will be returned.
 func (k Keeper) query(ctx sdk.Context, q abci.RequestQuery) ([]byte, error) {
 	querier := k.queryRouter.Route(q.Path)
 	if querier == nil {
@@ -154,5 +156,6 @@ func (k Keeper) query(ctx sdk.Context, q abci.RequestQuery) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return res.Value, nil
 }
