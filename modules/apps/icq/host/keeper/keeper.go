@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,6 +11,7 @@ import (
 	icqtypes "github.com/cosmos/ibc-go/v3/modules/apps/icq/types"
 	"github.com/cosmos/ibc-go/v3/modules/apps/transfer/types"
 	host "github.com/cosmos/ibc-go/v3/modules/core/24-host"
+	"github.com/tendermint/tendermint/libs/log"
 )
 
 // Keeper defines the IBC interchain query host keeper
