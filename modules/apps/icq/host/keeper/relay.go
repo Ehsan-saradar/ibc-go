@@ -21,7 +21,7 @@ func (k Keeper) OnRecvPacket(ctx sdk.Context, packet channeltypes.Packet) ([]byt
 	}
 
 	switch data.Type {
-	case icqtypes.QUERY:
+	case icqtypes.ABCI:
 		response, err := k.executeQuery(ctx, data.Request)
 		if err != nil {
 			return nil, err

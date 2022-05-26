@@ -4,6 +4,16 @@
 
 ## Table of Contents
 
+- [ibc/applications/icq/v1/genesis.proto](#ibc/applications/icq/v1/genesis.proto)
+    - [GenesisState](#ibc.applications.icq.v1.GenesisState)
+    - [HostGenesisState](#ibc.applications.icq.v1.HostGenesisState)
+  
+- [ibc/applications/icq/v1/packet.proto](#ibc/applications/icq/v1/packet.proto)
+    - [InterchainQueryPacketAck](#ibc.applications.icq.v1.InterchainQueryPacketAck)
+    - [InterchainQueryPacketData](#ibc.applications.icq.v1.InterchainQueryPacketData)
+  
+    - [Type](#ibc.applications.icq.v1.Type)
+  
 - [ibc/applications/interchain_accounts/v1/account.proto](#ibc/applications/interchain_accounts/v1/account.proto)
     - [InterchainAccount](#ibc.applications.interchain_accounts.v1.InterchainAccount)
   
@@ -268,6 +278,113 @@
     - [Misbehaviour](#ibc.lightclients.tendermint.v1.Misbehaviour)
   
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="ibc/applications/icq/v1/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## ibc/applications/icq/v1/genesis.proto
+
+
+
+<a name="ibc.applications.icq.v1.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the interchain query genesis state
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `host_genesis_state` | [HostGenesisState](#ibc.applications.icq.v1.HostGenesisState) |  |  |
+
+
+
+
+
+
+<a name="ibc.applications.icq.v1.HostGenesisState"></a>
+
+### HostGenesisState
+HostGenesisState defines the interchain accounts host genesis state
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `port` | [string](#string) |  |  |
+| `params` | [ibc.applications.icq.host.v1.Params](#ibc.applications.icq.host.v1.Params) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="ibc/applications/icq/v1/packet.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## ibc/applications/icq/v1/packet.proto
+
+
+
+<a name="ibc.applications.icq.v1.InterchainQueryPacketAck"></a>
+
+### InterchainQueryPacketAck
+InterchainQueryPacketAck is comprised of an ABCI query response with non-deterministic fields left empty (e.g. Codespace, Log, Info and ...).
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `response` | [tendermint.abci.ResponseQuery](#tendermint.abci.ResponseQuery) |  |  |
+
+
+
+
+
+
+<a name="ibc.applications.icq.v1.InterchainQueryPacketData"></a>
+
+### InterchainQueryPacketData
+InterchainQueryPacketData is comprised of an ABCI query request and type of query.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `type` | [Type](#ibc.applications.icq.v1.Type) |  |  |
+| `request` | [tendermint.abci.RequestQuery](#tendermint.abci.RequestQuery) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+
+<a name="ibc.applications.icq.v1.Type"></a>
+
+### Type
+Type defines a classification of message issued from a controller chain to its associated interchain query
+host
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| TYPE_UNSPECIFIED | 0 | Default zero value enumeration |
+| TYPE_ABCI | 1 | Runs ABCI query request in host chain and sends back the results to the controller chain |
+
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
 
 
 
