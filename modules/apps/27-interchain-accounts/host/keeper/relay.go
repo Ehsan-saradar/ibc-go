@@ -24,12 +24,12 @@ func (k Keeper) OnRecvPacket(ctx sdk.Context, packet channeltypes.Packet) ([]byt
 	case icatypes.EXECUTE_TX:
 		msgs, err := icatypes.DeserializeCosmosTx(k.cdc, data.Data)
 		if err != nil {
-			return nil, err
+			return nil, sdkerrors.Wrapf(err, "cannot deserialize ICS-27 interchain account tx")
 		}
 
 		txResponse, err := k.executeTx(ctx, packet.SourcePort, packet.DestinationPort, packet.DestinationChannel, msgs)
 		if err != nil {
-			return nil, err
+			return nil, sdkerrors.Wrapf(err, "cannot execute ICS-27 interchain account tx")
 		}
 
 		return txResponse, nil
