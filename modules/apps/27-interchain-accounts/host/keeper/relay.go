@@ -17,7 +17,7 @@ func (k Keeper) OnRecvPacket(ctx sdk.Context, packet channeltypes.Packet) ([]byt
 
 	if err := icatypes.ModuleCdc.UnmarshalJSON(packet.GetData(), &data); err != nil {
 		// UnmarshalJSON errors are indeterminate and therefore are not wrapped and included in failed acks
-		return nil, sdkerrors.Wrapf(icatypes.ErrUnknownDataType, "cannot unmarshal ICS-27 interchain account packet data")
+		return nil, sdkerrors.Wrapf(icatypes.ErrUnknownDataType, "cannot unmarshal ICS-27 interchain account packet data: %s", err.Error())
 	}
 
 	switch data.Type {
