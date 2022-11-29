@@ -63,7 +63,7 @@ func DeserializeCosmosTx(cdc codec.BinaryCodec, data []byte) ([]sdk.Msg, error) 
 
 	var cosmosTx CosmosTx
 	if err := cdc.Unmarshal(data, &cosmosTx); err != nil {
-		return nil, err
+		return nil, sdkerrors.Wrapf(err, "cannot unmarshal to cosmos TX")
 	}
 
 	msgs := make([]sdk.Msg, len(cosmosTx.Messages))
@@ -73,7 +73,7 @@ func DeserializeCosmosTx(cdc codec.BinaryCodec, data []byte) ([]sdk.Msg, error) 
 
 		err := cdc.UnpackAny(any, &msg)
 		if err != nil {
-			return nil, err
+			return nil, sdkerrors.Wrapf(err, "cannot unpack the anys")
 		}
 
 		msgs[i] = msg
