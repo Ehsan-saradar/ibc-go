@@ -1,6 +1,8 @@
 package keeper
 
 import (
+	"encoding/json"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/gogo/protobuf/proto"
@@ -10,19 +12,30 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
 )
 
+type intermediate struct {
+	Type icatypes.Type  `protobuf:"varint,1,opt,name=type,proto3,enum=ibc.applications.interchain_accounts.v1.Type" json:"type,omitempty"`
+	Data json.RawMessage `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Memo string `protobuf:"bytes,3,opt,name=memo,proto3" json:"memo,omitempty"`
+}
+
 // OnRecvPacket handles a given interchain accounts packet on a destination host chain.
 // If the transaction is successfully executed, the transaction response bytes will be returned.
 func (k Keeper) OnRecvPacket(ctx sdk.Context, packet channeltypes.Packet) ([]byte, error) {
-	var data icatypes.InterchainAccountPacketData
+	// var data icatypes.InterchainAccountPacketData
+	var intermediate intermediate
 
-	if err := icatypes.ModuleCdc.UnmarshalJSON(packet.GetData(), &data); err != nil {
-		// UnmarshalJSON errors are indeterminate and therefore are not wrapped and included in failed acks
-		return nil, sdkerrors.Wrapf(icatypes.ErrUnknownDataType, "cannot unmarshal ICS-27 interchain account packet data: %s\nExpected %+v and got %s", err.Error(), data, string(packet.GetData()))
+	if err := json.Unmarshal(packet.GetData(), &intermediate); err != nil {
+		return nil, sdkerrors.Wrapf(icatypes.ErrUnknownDataType, "cannot unmarshal intermediate data packet data: %s\nExpected %+v and got %s", err.Error(), intermediate, string(packet.GetData()))
 	}
 
-	switch data.Type {
+	// if err := icatypes.ModuleCdc.UnmarshalJSON(packet.GetData(), &data); err != nil {
+	// 	// UnmarshalJSON errors are indeterminate and therefore are not wrapped and included in failed acks
+	// 	return nil, sdkerrors.Wrapf(icatypes.ErrUnknownDataType, "cannot unmarshal ICS-27 interchain account packet data: %s\nExpected %+v and got %s", err.Error(), data, string(packet.GetData()))
+	// }
+
+	switch intermediate.Type {
 	case icatypes.EXECUTE_TX:
-		msgs, err := icatypes.DeserializeCosmosTx(k.cdc, data.Data)
+		msgs, err := icatypes.DeserializeCosmosTx(k.cdc, intermediate.Data)
 		if err != nil {
 			return nil, sdkerrors.Wrapf(err, "cannot deserialize ICS-27 interchain account tx")
 		}
