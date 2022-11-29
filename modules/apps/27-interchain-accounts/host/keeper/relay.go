@@ -13,8 +13,8 @@ import (
 )
 
 type intermediate struct {
-	Type icatypes.Type  `protobuf:"varint,1,opt,name=type,proto3,enum=ibc.applications.interchain_accounts.v1.Type" json:"type,omitempty"`
-	Data json.RawMessage `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Type icatypes.Type  `protobuf:"varint,1,opt,name=type,proto3,enum=ibc.applications.interchain_accounts.v1.Type" json:"@type,omitempty"`
+	Data []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	Memo string `protobuf:"bytes,3,opt,name=memo,proto3" json:"memo,omitempty"`
 }
 
@@ -24,7 +24,7 @@ func (k Keeper) OnRecvPacket(ctx sdk.Context, packet channeltypes.Packet) ([]byt
 	// var data icatypes.InterchainAccountPacketData
 	var intermediate intermediate
 
-	if err := json.Unmarshal(packet.GetData(), &intermediate); err != nil {
+	if err := json.Unmarshal(packet.Data, &intermediate); err != nil {
 		return nil, sdkerrors.Wrapf(icatypes.ErrUnknownDataType, "cannot unmarshal intermediate data packet data: %s\nExpected %+v and got %s", err.Error(), intermediate, string(packet.GetData()))
 	}
 
